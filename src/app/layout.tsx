@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import 'antd/dist/reset.css';
-import ServiceWorkerRegister from "./components/ServiceWorkerRegister";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +46,6 @@ export default function RootLayout({
         <meta name="theme-color" content="#6366f1" />
       </head>
       <body className={`antialiased ${geistSans.className} ${geistMono.className}`}>
-        <ServiceWorkerRegister />
         {children}
       </body>
     </html>

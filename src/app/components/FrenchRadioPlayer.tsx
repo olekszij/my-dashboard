@@ -24,13 +24,13 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
   {
     id: "nostalgie",
     name: "Nostalgie",
-    url: "http://cdn.nrjaudio.fm/adwz2/fr/30201/mp3_128.mp3?origine=fluxradios",
+    url: "http://cdn.nrjaudio.fm/adwz2/fr/30601/mp3_128.mp3?origine=fluxradios",
     description: "Chansons françaises et internationales"
   },
   {
     id: "cheriefm",
     name: "Chérie FM",
-    url: "http://cdn.nrjaudio.fm/adwz2/fr/30301/mp3_128.mp3?origine=fluxradios",
+    url: "https://scdn.nrjaudio.fm/adwz2/fr/30201/mp3_128.mp3?origine=fluxradios",
     description: "Pop Love Music"
   },
   {
@@ -48,21 +48,16 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
   {
     id: "funradio",
     name: "Fun Radio",
-    url: "http://cdn.nrjaudio.fm/adwz2/fr/30501/mp3_128.mp3?origine=fluxradios",
+    url: "http://icecast.rtl.fr/fun-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
     description: "Le son dancefloor"
   },
   {
-    id: "rfm",
-    name: "RFM",
-    url: "http://rfm-live-mp3-128.scdn.arkena.com/rd-8040/rfm.mp3",
+    id: "fc",
+    name: "France Culture",
+    url: "http://direct.franceculture.fr/live/franceculture-hifi.aac",
     description: "Le meilleur de la musique"
   },
-  {
-    id: "europe1",
-    name: "Europe 1",
-    url: "http://ais-live.cloud-services.paris:8000/europe1.mp3",
-    description: "Actualités, talk, musique"
-  },
+
   {
     id: "skyrock",
     name: "Skyrock",
@@ -144,14 +139,12 @@ export default function FrenchRadioPlayer() {
             }`}
             aria-current={current === i}
           >
-            <div>{station.name}</div>
+            <div className="font-bold text-lg text-black mb-1">{station.name}</div>
             <div className="text-xs text-gray-600">{station.description}</div>
           </button>
         ))}
       </div>
-      <div className="text-center text-xs text-gray-500">
-        Если поток не работает, <a href={FRENCH_RADIO_STATIONS[current].url} target="_blank" rel="noopener noreferrer" className="underline">откройте его в VLC/Winamp</a>
-      </div>
+      
     </div>
   );
 } 

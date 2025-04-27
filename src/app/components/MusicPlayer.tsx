@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { parseBlob } from "music-metadata-browser";
 import { PlusOutlined } from "@ant-design/icons";
 
 interface Track {
@@ -90,26 +89,12 @@ export default function MusicPlayer() {
     const tracks: Track[] = [];
     for (const file of Array.from(files)) {
       if (!file.type.startsWith("audio/")) continue;
-      let cover: string | undefined = undefined;
-      let duration: number | undefined = undefined;
-      let artist: string | undefined = undefined;
-      try {
-        const meta = await parseBlob(file);
-        if (meta.common.picture && meta.common.picture[0]) {
-          const pic = meta.common.picture[0];
-          cover = `data:${pic.format};base64,${btoa(
-            String.fromCharCode(...new Uint8Array(pic.data))
-          )}`;
-        }
-        duration = meta.format.duration;
-        artist = meta.common.artist;
-      } catch {}
       tracks.push({
         url: URL.createObjectURL(file),
         name: file.name,
-        artist,
-        cover,
-        duration,
+        artist: undefined,
+        cover: undefined,
+        duration: undefined,
       });
     }
     if (tracks.length > 0) {
