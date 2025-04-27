@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { GeistSans, GeistMono } from "geist/font";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import 'antd/dist/reset.css';
 
-const geistSans = GeistSans;
-const geistMono = GeistMono;
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const viewport = {
   width: "device-width",
@@ -36,7 +38,7 @@ export default function RootLayout({
       <head>
         <meta name="theme-color" content="#6366f1" />
       </head>
-      <body className={`antialiased ${geistSans.className} ${geistMono.className}`}>
+      <body className={`antialiased ${inter.className}`}>
         {children}
       </body>
     </html>
