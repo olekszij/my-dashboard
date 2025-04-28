@@ -13,8 +13,8 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     id: "rireetchansons",
     name: "Rire & Chansons",
     urls: [
-      "https://streaming.radio.rtl.fr/rireetchansons-1-44-128",
-      "http://streaming.radio.rtl.fr/rireetchansons-1-44-128"
+      "https://scdn.nrjaudio.fm/adwz2/fr/30401/mp3_128.mp3?origine=fluxradios",
+      "http://cdn.nrjaudio.fm/adwz2/fr/30401/mp3_128.mp3?origine=fluxradios"
     ],
     description: "Humour & chansons"
   },
@@ -22,8 +22,8 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     id: "nrj",
     name: "NRJ",
     urls: [
-      "https://streaming.radio.rtl.fr/nrj-1-44-128",
-      "http://streaming.radio.rtl.fr/nrj-1-44-128"
+      "https://scdn.nrjaudio.fm/adwz2/fr/30001/mp3_128.mp3?origine=fluxradios",
+      "http://cdn.nrjaudio.fm/adwz2/fr/30001/mp3_128.mp3?origine=fluxradios"
     ],
     description: "Hits & Pop"
   },
@@ -31,8 +31,8 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     id: "nostalgie",
     name: "Nostalgie",
     urls: [
-      "https://streaming.radio.rtl.fr/nostalgie-1-44-128",
-      "http://streaming.radio.rtl.fr/nostalgie-1-44-128"
+      "https://scdn.nrjaudio.fm/adwz2/fr/30601/mp3_128.mp3?origine=fluxradios",
+      "http://cdn.nrjaudio.fm/adwz2/fr/30601/mp3_128.mp3?origine=fluxradios"
     ],
     description: "Chansons françaises et internationales"
   },
@@ -40,8 +40,8 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     id: "cheriefm",
     name: "Chérie FM",
     urls: [
-      "https://streaming.radio.rtl.fr/cheriefm-1-44-128",
-      "http://streaming.radio.rtl.fr/cheriefm-1-44-128"
+      "https://scdn.nrjaudio.fm/adwz2/fr/30201/mp3_128.mp3?origine=fluxradios",
+      "http://cdn.nrjaudio.fm/adwz2/fr/30201/mp3_128.mp3?origine=fluxradios"
     ],
     description: "Pop Love Music"
   },
@@ -49,8 +49,9 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     id: "rtl",
     name: "RTL",
     urls: [
-      "https://streaming.radio.rtl.fr/rtl-1-44-128",
-      "http://streaming.radio.rtl.fr/rtl-1-44-128"
+      "http://icecast.rtl.fr/rtl-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+      "http://streaming.radio.rtl.fr/rtl-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+      "http://streaming.radio.rtl.fr:80/rtl-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg"
     ],
     description: "Actualités, talk, musique"
   },
@@ -58,8 +59,10 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     id: "rtl2",
     name: "RTL2",
     urls: [
-      "https://streaming.radio.rtl2.fr/rtl2-1-44-128",
-      "http://streaming.radio.rtl2.fr/rtl2-1-44-128"
+      "http://icecast.rtl2.fr/rtl2-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+      "http://icecast.rtl.fr/rtl2-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+      "http://streaming.radio.rtl2.fr/rtl2-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+      "http://streaming.radio.rtl2.fr:80/rtl2-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg"
     ],
     description: "Le son pop-rock"
   },
@@ -67,8 +70,10 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     id: "funradio",
     name: "Fun Radio",
     urls: [
-      "https://icecast.rtl.fr/fun-1-44-128",
-      "http://icecast.rtl.fr/fun-1-44-128"
+      "http://icecast.funradio.fr/fun-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+      "http://icecast.rtl.fr/fun-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+      "http://streaming.radio.funradio.fr/fun-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+      "http://streaming.radio.funradio.fr:80/fun-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg"
     ],
     description: "Le son dancefloor"
   },
@@ -76,8 +81,10 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     id: "fc",
     name: "France Culture",
     urls: [
-      "https://direct.franceculture.fr/live/franceculture-hifi.aac",
-      "http://direct.franceculture.fr/live/franceculture-hifi.aac"
+      "http://icecast.radiofrance.fr/franceculture-hifi.aac",
+      "http://direct.franceculture.fr/live/franceculture-hifi.aac",
+      "http://icecast.radiofrance.fr/franceculture-midfi.mp3",
+      "http://direct.franceculture.fr/live/franceculture-midfi.mp3"
     ],
     description: "Le meilleur de la musique"
   },
@@ -89,6 +96,47 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
       "http://icecast.skyrock.net/s/natio_mp3_128k"
     ],
     description: "Rap, RnB, Hip-Hop"
+  },
+  {
+    id: "radioclassique",
+    name: "Radio Classique",
+    urls: [
+      "http://radioclassique.ice.infomaniak.ch/radioclassique-high.mp3",
+      "http://broadcast.infomaniak.ch/radioclassique-high.mp3",
+      "http://statslive.infomaniak.ch/playlist/radioclassique/radioclassique-high.mp3/playlist.m3u"
+    ],
+    description: "Musique classique"
+  },
+  {
+    id: "europe2",
+    name: "Europe 2",
+    urls: [
+      "http://europe2.lmn.fm/europe2.mp3",
+      "http://europe2.lmn.fm/europe2.aac"
+    ],
+    description: "Hits & Pop"
+  },
+  {
+    id: "franceinter",
+    name: "France Inter",
+    urls: [
+      "http://icecast.radiofrance.fr/franceinter-hifi.aac",
+      "http://direct.franceinter.fr/live/franceinter-hifi.aac",
+      "http://icecast.radiofrance.fr/franceinter-midfi.mp3",
+      "http://direct.franceinter.fr/live/franceinter-midfi.mp3"
+    ],
+    description: "Actualités, talk, musique"
+  },
+  {
+    id: "ouifm",
+    name: "Ouï FM",
+    urls: [
+      "http://ouifm.ice.infomaniak.ch/ouifm-high.mp3",
+      "http://broadcast.infomaniak.net/ouifm-high.mp3",
+      "http://broadcast.infomaniak.ch/ouifm-high.mp3",
+      "http://statslive.infomaniak.ch/playlist/ouifm/ouifm-high.mp3/playlist.m3u"
+    ],
+    description: "Rock & Indé"
   }
 ];
 
@@ -233,4 +281,4 @@ export default function FrenchRadioPlayer() {
       </div>
     </div>
   );
-} 
+}
