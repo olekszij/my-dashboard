@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 interface RadioStation {
   id: string;
   name: string;
-  url: string;
+  urls: string[]; // Multiple URLs as fallbacks
   description: string;
 }
 
@@ -12,55 +12,82 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
   {
     id: "rireetchansons",
     name: "Rire & Chansons",
-    url: "https://cdn.nrjaudio.fm/adwz2/fr/30401/mp3_128.mp3?origine=fluxradios",
+    urls: [
+      "https://streaming.radio.rtl.fr/rireetchansons-1-44-128",
+      "http://streaming.radio.rtl.fr/rireetchansons-1-44-128"
+    ],
     description: "Humour & chansons"
   },
   {
     id: "nrj",
     name: "NRJ",
-    url: "https://cdn.nrjaudio.fm/adwz2/fr/30001/mp3_128.mp3?origine=fluxradios",
+    urls: [
+      "https://streaming.radio.rtl.fr/nrj-1-44-128",
+      "http://streaming.radio.rtl.fr/nrj-1-44-128"
+    ],
     description: "Hits & Pop"
   },
   {
     id: "nostalgie",
     name: "Nostalgie",
-    url: "https://cdn.nrjaudio.fm/adwz2/fr/30601/mp3_128.mp3?origine=fluxradios",
+    urls: [
+      "https://streaming.radio.rtl.fr/nostalgie-1-44-128",
+      "http://streaming.radio.rtl.fr/nostalgie-1-44-128"
+    ],
     description: "Chansons françaises et internationales"
   },
   {
     id: "cheriefm",
     name: "Chérie FM",
-    url: "https://scdn.nrjaudio.fm/adwz2/fr/30201/mp3_128.mp3?origine=fluxradios",
+    urls: [
+      "https://streaming.radio.rtl.fr/cheriefm-1-44-128",
+      "http://streaming.radio.rtl.fr/cheriefm-1-44-128"
+    ],
     description: "Pop Love Music"
   },
   {
     id: "rtl",
     name: "RTL",
-    url: "https://streaming.radio.rtl.fr/rtl-1-44-128",
+    urls: [
+      "https://streaming.radio.rtl.fr/rtl-1-44-128",
+      "http://streaming.radio.rtl.fr/rtl-1-44-128"
+    ],
     description: "Actualités, talk, musique"
   },
   {
     id: "rtl2",
     name: "RTL2",
-    url: "https://streaming.radio.rtl2.fr/rtl2-1-44-128",
+    urls: [
+      "https://streaming.radio.rtl2.fr/rtl2-1-44-128",
+      "http://streaming.radio.rtl2.fr/rtl2-1-44-128"
+    ],
     description: "Le son pop-rock"
   },
   {
     id: "funradio",
     name: "Fun Radio",
-    url: "https://icecast.rtl.fr/fun-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+    urls: [
+      "https://icecast.rtl.fr/fun-1-44-128",
+      "http://icecast.rtl.fr/fun-1-44-128"
+    ],
     description: "Le son dancefloor"
   },
   {
     id: "fc",
     name: "France Culture",
-    url: "https://direct.franceculture.fr/live/franceculture-hifi.aac",
+    urls: [
+      "https://direct.franceculture.fr/live/franceculture-hifi.aac",
+      "http://direct.franceculture.fr/live/franceculture-hifi.aac"
+    ],
     description: "Le meilleur de la musique"
   },
   {
     id: "skyrock",
     name: "Skyrock",
-    url: "https://icecast.skyrock.net/s/natio_mp3_128k",
+    urls: [
+      "https://icecast.skyrock.net/s/natio_mp3_128k",
+      "http://icecast.skyrock.net/s/natio_mp3_128k"
+    ],
     description: "Rap, RnB, Hip-Hop"
   }
 ];
@@ -70,6 +97,7 @@ export default function FrenchRadioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentUrlIndex, setCurrentUrlIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -77,9 +105,15 @@ export default function FrenchRadioPlayer() {
       const audio = audioRef.current;
       
       const handleError = () => {
-        setError(`Error playing ${FRENCH_RADIO_STATIONS[current].name}. Please try another station.`);
-        setIsPlaying(false);
-        setIsLoading(false);
+        // Try next URL if available
+        if (currentUrlIndex < FRENCH_RADIO_STATIONS[current].urls.length - 1) {
+          setCurrentUrlIndex(prev => prev + 1);
+          setError(`Trying alternative stream for ${FRENCH_RADIO_STATIONS[current].name}...`);
+        } else {
+          setError(`Unable to play ${FRENCH_RADIO_STATIONS[current].name}. Please try another station.`);
+          setIsPlaying(false);
+          setIsLoading(false);
+        }
       };
 
       const handleLoadStart = () => {
@@ -111,10 +145,16 @@ export default function FrenchRadioPlayer() {
         audio.removeEventListener('canplay', handleCanPlay);
       };
     }
-  }, [isPlaying, current]);
+  }, [isPlaying, current, currentUrlIndex]);
 
   const handlePlayPause = () => {
     setIsPlaying((prev) => !prev);
+  };
+
+  const handleStationChange = (index: number) => {
+    setCurrent(index);
+    setCurrentUrlIndex(0);
+    setIsPlaying(true);
   };
 
   return (
@@ -138,8 +178,8 @@ export default function FrenchRadioPlayer() {
       <div className="mb-8 flex flex-col items-center justify-center">
         <audio
           ref={audioRef}
-          key={FRENCH_RADIO_STATIONS[current].url}
-          src={FRENCH_RADIO_STATIONS[current].url}
+          key={FRENCH_RADIO_STATIONS[current].urls[currentUrlIndex]}
+          src={FRENCH_RADIO_STATIONS[current].urls[currentUrlIndex]}
           crossOrigin="anonymous"
         />
         <div className="flex items-center justify-center w-full mt-6">
@@ -178,7 +218,7 @@ export default function FrenchRadioPlayer() {
         {FRENCH_RADIO_STATIONS.map((station, i) => (
           <button
             key={station.id}
-            onClick={() => { setCurrent(i); setIsPlaying(true); }}
+            onClick={() => handleStationChange(i)}
             className={`p-4 rounded-lg border transition-all text-left font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 ${
               current === i
                 ? "bg-blue-100 border-blue-500 text-blue-900"
