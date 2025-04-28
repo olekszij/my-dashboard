@@ -12,19 +12,19 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
   {
     id: "rireetchansons",
     name: "Rire & Chansons",
-    url: "http://cdn.nrjaudio.fm/adwz2/fr/30401/mp3_128.mp3?origine=fluxradios",
+    url: "https://cdn.nrjaudio.fm/adwz2/fr/30401/mp3_128.mp3?origine=fluxradios",
     description: "Humour & chansons"
   },
   {
     id: "nrj",
     name: "NRJ",
-    url: "http://cdn.nrjaudio.fm/adwz2/fr/30001/mp3_128.mp3?origine=fluxradios",
+    url: "https://cdn.nrjaudio.fm/adwz2/fr/30001/mp3_128.mp3?origine=fluxradios",
     description: "Hits & Pop"
   },
   {
     id: "nostalgie",
     name: "Nostalgie",
-    url: "http://cdn.nrjaudio.fm/adwz2/fr/30601/mp3_128.mp3?origine=fluxradios",
+    url: "https://cdn.nrjaudio.fm/adwz2/fr/30601/mp3_128.mp3?origine=fluxradios",
     description: "Chansons françaises et internationales"
   },
   {
@@ -36,31 +36,31 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
   {
     id: "rtl",
     name: "RTL",
-    url: "http://streaming.radio.rtl.fr/rtl-1-44-128",
+    url: "https://streaming.radio.rtl.fr/rtl-1-44-128",
     description: "Actualités, talk, musique"
   },
   {
     id: "rtl2",
     name: "RTL2",
-    url: "http://streaming.radio.rtl2.fr/rtl2-1-44-128",
+    url: "https://streaming.radio.rtl2.fr/rtl2-1-44-128",
     description: "Le son pop-rock"
   },
   {
     id: "funradio",
     name: "Fun Radio",
-    url: "http://icecast.rtl.fr/fun-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
+    url: "https://icecast.rtl.fr/fun-1-44-128?listen=webCwsBCggNCQgLDQUGBAcGBg",
     description: "Le son dancefloor"
   },
   {
     id: "fc",
     name: "France Culture",
-    url: "http://direct.franceculture.fr/live/franceculture-hifi.aac",
+    url: "https://direct.franceculture.fr/live/franceculture-hifi.aac",
     description: "Le meilleur de la musique"
   },
   {
     id: "skyrock",
     name: "Skyrock",
-    url: "http://icecast.skyrock.net/s/natio_mp3_128k",
+    url: "https://icecast.skyrock.net/s/natio_mp3_128k",
     description: "Rap, RnB, Hip-Hop"
   }
 ];
@@ -68,15 +68,48 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
 export default function FrenchRadioPlayer() {
   const [current, setCurrent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (audioRef.current) {
+      const audio = audioRef.current;
+      
+      const handleError = () => {
+        setError(`Error playing ${FRENCH_RADIO_STATIONS[current].name}. Please try another station.`);
+        setIsPlaying(false);
+        setIsLoading(false);
+      };
+
+      const handleLoadStart = () => {
+        setIsLoading(true);
+        setError(null);
+      };
+
+      const handleCanPlay = () => {
+        setIsLoading(false);
+        setError(null);
+      };
+
+      audio.addEventListener('error', handleError);
+      audio.addEventListener('loadstart', handleLoadStart);
+      audio.addEventListener('canplay', handleCanPlay);
+
       if (isPlaying) {
-        audioRef.current.play().catch(() => {});
+        audio.play().catch((err) => {
+          console.error('Playback error:', err);
+          handleError();
+        });
       } else {
-        audioRef.current.pause();
+        audio.pause();
       }
+
+      return () => {
+        audio.removeEventListener('error', handleError);
+        audio.removeEventListener('loadstart', handleLoadStart);
+        audio.removeEventListener('canplay', handleCanPlay);
+      };
     }
   }, [isPlaying, current]);
 
@@ -87,31 +120,43 @@ export default function FrenchRadioPlayer() {
   return (
     <div className="w-full max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-lg">
       <h1 className="text-3xl font-bold text-gray-900 mb-4 text-center">French Radio Online</h1>
+      
       {/* Current station */}
       <div className="mb-2 text-center">
         <div className="text-lg font-semibold text-blue-900">{FRENCH_RADIO_STATIONS[current].name}</div>
         <div className="text-xs text-gray-600">{FRENCH_RADIO_STATIONS[current].description}</div>
       </div>
+
+      {/* Error message */}
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-center">
+          {error}
+        </div>
+      )}
+
       {/* Custom player */}
       <div className="mb-8 flex flex-col items-center justify-center">
         <audio
           ref={audioRef}
           key={FRENCH_RADIO_STATIONS[current].url}
           src={FRENCH_RADIO_STATIONS[current].url}
-          onError={() =>
-            alert(
-              'Error playing the stream. Please try opening it in VLC or another application.'
-            )
-          }
+          crossOrigin="anonymous"
         />
         <div className="flex items-center justify-center w-full mt-6">
           <button
             onClick={handlePlayPause}
-            className="w-28 h-28 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors shadow-lg focus:outline-none relative"
+            className={`w-28 h-28 rounded-full flex items-center justify-center transition-colors shadow-lg focus:outline-none relative ${
+              isLoading 
+                ? 'bg-gray-400 cursor-wait' 
+                : 'bg-black hover:bg-gray-800 text-white'
+            }`}
             aria-label={isPlaying ? "Pause" : "Play"}
+            disabled={isLoading}
             style={{ minWidth: 112, minHeight: 112 }}
           >
-            {isPlaying ? (
+            {isLoading ? (
+              <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : isPlaying ? (
               <div className="flex items-center justify-center space-x-1">
                 <div className="w-1 h-8 bg-white animate-[equalizer_1s_ease-in-out_infinite]"></div>
                 <div className="w-1 h-8 bg-white animate-[equalizer_1.1s_ease-in-out_infinite]"></div>
@@ -121,12 +166,13 @@ export default function FrenchRadioPlayer() {
               </div>
             ) : (
               <svg className="w-16 h-16" fill="none" viewBox="0 0 48 48">
-                <polygon points="14,10 40,24 14,38" fill="white" />
+                <polygon points="14,10 40,24 14,38" fill="currentColor" />
               </svg>
             )}
           </button>
         </div>
       </div>
+
       {/* Station selection buttons */}
       <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         {FRENCH_RADIO_STATIONS.map((station, i) => (
