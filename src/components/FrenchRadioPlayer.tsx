@@ -55,7 +55,7 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     previewImage: "/images/radio/cheriefm.png"
   },
   {
-    id: "fc",
+    id: "franceculture",  // Изменено с "fc" на "franceculture"
     name: "France Culture",
     urls: [
       "http://icecast.radiofrance.fr/franceculture-hifi.aac",
@@ -123,42 +123,40 @@ const FRENCH_RADIO_STATIONS: RadioStation[] = [
     description: "Rock & Indé",
     previewImage: "/images/radio/ouifm.png"
   },
+
   {
-    id: "funradio",
-    name: "Fun Radio",
+    id: "mouv",
+    name: "Mouv'",
     urls: [
-      "https://stream.fluxradios.fr/funradio.mp3",
-      "http://stream.funradio.fr/fun-1-48-192",
-      "http://icecast.funradio.fr/fun-1-48-192"
+      "http://icecast.radiofrance.fr/mouv-hifi.aac",
+      "http://direct.mouv.fr/live/mouv-hifi.aac",
+      "http://icecast.radiofrance.fr/mouv-midfi.mp3",
+      "http://direct.mouv.fr/live/mouv-midfi.mp3"
     ],
-    description: "Hits & Pop",
-    previewImage: "/images/radio/funradio.png"
-  },
-  {
-    id: "rtl",
-    name: "RTL",
-    urls: [
-      "https://stream.fluxradios.fr/rtl.mp3",
-      "http://stream.rtl.fr/rtl-1-48-192",
-      "http://icecast.rtl.fr/rtl-1-48-192"
-    ],
-    description: "Actualités & Talk",
-    previewImage: "/images/radio/rtl.png"
+    description: "Urban Music & Hip-Hop",
+    previewImage: "/images/radio/mouv.png"
   }
 ];
 
 // Add this function before the FrenchRadioPlayer component
 const getStationLogo = (stationId: string): string => {
   const availableLogos = [
-    'rireetchansons',
-    'nrj',
-    'nostalgie',
+    'cheriefm',
     'europe2',
-    'skyrock',
-    'rtl'
+    'franceculture',
+    'franceinter',
+    'mouv',
+    'nostalgie',
+    'nrj',
+    'ouifm',
+    'radio',
+    'radioclassique',
+    'rireetchansons',
+    'rtl',
+    'skyrock'
   ];
-  
-  return availableLogos.includes(stationId) 
+
+  return availableLogos.includes(stationId)
     ? `/images/radio/${stationId}.png`
     : '/images/radio/radio.png';
 };
@@ -174,7 +172,7 @@ export default function FrenchRadioPlayer() {
   useEffect(() => {
     if (audioRef.current) {
       const audio = audioRef.current;
-      
+
       const handleError = () => {
         if (currentUrlIndex < FRENCH_RADIO_STATIONS[current].urls.length - 1) {
           setCurrentUrlIndex(prev => prev + 1);
@@ -231,17 +229,16 @@ export default function FrenchRadioPlayer() {
     <>
       <div className="w-full max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow-lg mb-24">
         <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">French Radio Online</h1>
-        
+
         {/* Station selection buttons */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {FRENCH_RADIO_STATIONS.map((station, index) => (
             <div
               key={station.id}
-              className={`p-4 rounded-lg shadow-md transition-all duration-200 ${
-                current === index
-                  ? "bg-blue-100 border-2 border-blue-500"
-                  : "bg-white hover:bg-gray-50"
-              }`}
+              className={`p-4 rounded-lg shadow-md transition-all duration-200 ${current === index
+                ? "bg-blue-100 border-2 border-blue-500"
+                : "bg-white hover:bg-gray-50"
+                }`}
               onClick={() => handleStationChange(index)}
             >
               <div className="flex items-center space-x-4">
@@ -277,11 +274,10 @@ export default function FrenchRadioPlayer() {
           <div className="flex items-center space-x-4">
             <button
               onClick={handlePlayPause}
-              className={`w-14 h-14 flex items-center justify-center transition-colors focus:outline-none ${
-                isLoading 
-                  ? 'text-gray-400 cursor-wait' 
-                  : 'text-gray-900 hover:text-gray-700'
-              }`}
+              className={`w-14 h-14 flex items-center justify-center transition-colors focus:outline-none ${isLoading
+                ? 'text-gray-400 cursor-wait'
+                : 'text-gray-900 hover:text-gray-700'
+                }`}
               aria-label={isPlaying ? "Pause" : "Play"}
               disabled={isLoading}
             >
